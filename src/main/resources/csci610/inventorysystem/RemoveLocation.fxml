@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="817.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csci610.inventorysystem.RemoveLocationController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="51.0" text="Back" />
+        </items>
+      </ToolBar>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Add New Location" textAlignment="CENTER">
+               <font>
+                  <Font size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="50.0" left="175.3" top="50.0" />
+               </VBox.margin>
+            </Label>
+            <AnchorPane prefHeight="863.0" prefWidth="1183.0">
+               <children>
+                  <TableView fx:id="allLocsTable" layoutX="63.0" layoutY="14.0" onMouseClicked="#getClickedLocation" prefHeight="465.0" prefWidth="318.0">
+                    <columns>
+                      <TableColumn fx:id="existingLocationsCol" prefWidth="316.66664600372314" text="Existing Locations (Aisle-Bay-Sub Bay)" />
+                    </columns>
+                  </TableView>
+                  <Button layoutX="474.0" layoutY="271.0" mnemonicParsing="false" onAction="#removeLocationFromDB" text="Remove Location">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+                  <Label layoutX="483.0" layoutY="116.0" text="Selected Location:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="selectedLocation" layoutX="534.0" layoutY="159.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

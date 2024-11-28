@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="817.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csci610.inventorysystem.UpdateRemoveController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="51.0" text="Back" />
+        </items>
+      </ToolBar>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Update / Remove Pallet" textAlignment="CENTER">
+               <font>
+                  <Font size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="50.0" left="125.0" top="50.0" />
+               </VBox.margin>
+            </Label>
+            <AnchorPane prefHeight="863.0" prefWidth="1183.0">
+               <children>
+                  <TableView fx:id="allPalletsTable" layoutX="63.0" layoutY="14.0" onMouseClicked="#getClickedPallet" prefHeight="465.0" prefWidth="330.0">
+                    <columns>
+                      <TableColumn fx:id="PalletIDCol" prefWidth="166.00000762939453" text="Pallet ID" />
+                        <TableColumn fx:id="locationCol" prefWidth="162.66661071777344" text="Location" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="removeButton" disable="true" layoutX="486.0" layoutY="153.0" mnemonicParsing="false" onAction="#removeEntirePallet" prefHeight="67.0" prefWidth="167.0" text="Remove Entire Pallet" />
+                  <Button fx:id="updateButton" disable="true" layoutX="486.0" layoutY="276.0" mnemonicParsing="false" onAction="#updateLocation" prefHeight="67.0" prefWidth="167.0" text="Update Location" />
+                  <Button fx:id="addRemoveButton" disable="true" layoutX="486.0" layoutY="398.0" mnemonicParsing="false" onAction="#AddRemoveSKUs" prefHeight="67.0" prefWidth="167.0" text="Add/Remove SKUs" />
+                  <Label layoutX="475.0" layoutY="14.0" text="Selected Pallet ID:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="palledIDLabel" layoutX="518.0" layoutY="60.0" prefHeight="35.0" prefWidth="103.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

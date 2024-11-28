@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="881.0" prefWidth="598.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csci610.inventorysystem.TruckManagerController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="51.0" text="Back" />
+            <Button fx:id="createNewTruck" mnemonicParsing="false" onAction="#createNewTruck" text="Create New Truck Order" />
+            <Button fx:id="viewOldTrucks" mnemonicParsing="false" onAction="#viewOldTrucks" text="View Old Trucks" />
+        </items>
+      </ToolBar>
+   </top>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Truck Viewer" textAlignment="CENTER">
+               <font>
+                  <Font size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="50.0" top="50.0" />
+               </VBox.margin>
+            </Label>
+            <AnchorPane prefHeight="921.0" prefWidth="1183.0">
+               <children>
+                  <TableView fx:id="SKUTable" layoutX="96.0" layoutY="188.0" prefHeight="389.0" prefWidth="402.0">
+                    <columns>
+                      <TableColumn fx:id="SKUCol" prefWidth="199.3333740234375" text="SKU" />
+                      <TableColumn fx:id="quantityCol" prefWidth="202.0" text="Quantity" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="151.0" layoutY="20.0" text="Incoming Unpacked Trucks:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="207.0" layoutY="119.0" text="Delivery Date:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="deliveryDateLabel" layoutX="327.0" layoutY="119.0" prefHeight="27.0" prefWidth="104.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="processTruck" layoutX="231.0" layoutY="594.0" mnemonicParsing="false" onAction="#processTruck" text="Process Truck">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <ComboBox fx:id="truckChoiceBox" layoutX="207.0" layoutY="77.0" onAction="#loadTruckSKUs" prefHeight="25.0" prefWidth="172.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

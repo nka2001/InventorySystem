@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="859.0" prefWidth="811.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csci610.inventorysystem.AssignOrderController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="825.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="backButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="51.0" text="Back" />
+        </items>
+      </ToolBar>
+   </top>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Order Assignment" textAlignment="CENTER">
+               <font>
+                  <Font size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="50.0" top="50.0" />
+               </VBox.margin>
+            </Label>
+            <AnchorPane prefHeight="725.0" prefWidth="753.0">
+               <children>
+                  <TableView fx:id="userGrid" layoutX="39.0" layoutY="37.0" onMouseClicked="#getClickedUser" prefHeight="273.0" prefWidth="300.0">
+                    <columns>
+                      <TableColumn fx:id="usernameColumn" prefWidth="126.66673278808594" text="Username" />
+                      <TableColumn fx:id="displayNameColumn" prefWidth="171.33340454101562" text="Display Name" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="AssignButton" layoutX="137.0" layoutY="515.0" mnemonicParsing="false" onAction="#AssignOrder" text="Assign">
+                     <font>
+                        <Font size="24.0" />
+                     </font></Button>
+                  <Label layoutX="39.0" layoutY="410.0" text="Selected User:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="selectedUserLabel" layoutX="203.0" layoutY="410.0" prefHeight="35.0" prefWidth="136.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="ordersTable" layoutX="398.0" layoutY="37.0" onMouseClicked="#getClickedOrder" prefHeight="397.0" prefWidth="371.0">
+                    <columns>
+                      <TableColumn fx:id="OrderIDCol" prefWidth="131.33331298828125" text="Order ID" />
+                      <TableColumn fx:id="NotesCol" minWidth="4.0" prefWidth="238.66670735677081" text="Notes" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="39.0" layoutY="446.0" text="Selected Order:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="selectedOrderLabel" layoutX="203.0" layoutY="446.0" prefHeight="35.0" prefWidth="135.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

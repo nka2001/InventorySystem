@@ -1,0 +1,19 @@
+.remove-pallet-button {
+
+	-fx-background-image: url("removePallet.png");
+	-fx-background-size: 450px 405px;
+	-fx-background-position: center;
+	-fx-background-repeat: no-repeat;
+	-fx-font-family: "Poppins", sans-serif; /* A modern, bold sans-serif font */
+   	 -fx-font-size: 36px; /* Increase font size for prominence */
+   	 -fx-font-weight: bold; /* Make the text bold */
+   	 -fx-text-fill: Red; /* Use white for text color */
+   	 -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 6, 0.3, 2, 2);
+	
+    
+    
+    
+   	 -fx-padding: 10;
+	
+
+}
