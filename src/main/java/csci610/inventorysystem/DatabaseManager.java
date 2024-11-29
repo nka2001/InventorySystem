@@ -75,7 +75,7 @@ public class DatabaseManager {
 
     public boolean addUser(String username, String password, String displayName, String fName, String lName, String DateOfBirth, String Gender, float payRate, boolean isAdmin, String position, boolean isDisabled) throws ParseException {
 
-        String SQL = "insert into Users (username, User_password, Display_Name, First_Name, Last_Name, DateOfBirth, Gender, PayRate, Administrator, Position, Disabled) values (?,?,?,?,?,?,?,?,?,?,?)";
+        String SQL = "insert into Users (username, User_password, Display_Name, First_Name, Last_Name, DateOfBirth, Gender, PayRate, Administrator, Position, Disabled, requiresPWChange) values (?,?,?,?,?,?,?,?,?,?,?,true)";
         String encryptedPassword = EncryptionManager.encrypt(password);
 
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
@@ -374,7 +374,7 @@ public class DatabaseManager {
 
     public boolean resetPassword(String username, String newPassword) {
 
-        String sql = "update users set User_Password = ? where username = ?";
+        String sql = "update users set User_Password = ?, requiresPWChange = true where username = ?";
 
         String newEncryptedPassword = EncryptionManager.encrypt(newPassword);
 
@@ -1314,9 +1314,9 @@ public class DatabaseManager {
                 ps.setInt(1, truckID);
                 ps.setString(2, entry.getKey());
                 ps.setInt(3, Integer.parseInt(entry.getValue()));
-                
+
                 rows += ps.executeUpdate();
-                
+
             }
 
         } catch (SQLException e) {
@@ -1326,30 +1326,133 @@ public class DatabaseManager {
 
         return rows > 0;
     }
-    
-    public boolean getTruckExists(int TruckID){
-        
+
+    public boolean getTruckExists(int TruckID) {
+
         String sql = "select * from Truck where TruckID = ?";
-        
-        try{
+
+        try {
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setInt(1, TruckID);
-            
+
             ResultSet rs = ps.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 return true;
             }
-            
-            
-        } catch(SQLException e){
+
+        } catch (SQLException e) {
             System.out.println("error in get truck exists");
             e.printStackTrace();
         }
-        
-        
+
         return false;
     }
 
-    
+    public boolean reuqiresChange(String username) {
+
+        int userID = getUserID(username);
+
+        String sql = "select requiresPWChange from users where user_ID = ?";
+
+        try {
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setInt(1, userID);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                return rs.getBoolean("requiresPWChange");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error in requires change");
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public void removePWChange(String username) {
+
+        String sql = "update users set requiresPWChange = false where username = ?";
+
+        try {
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setString(1, username);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("error in remove password change");
+            e.printStackTrace();
+        }
+
+    }
+
+    public List<String> loadFreeLocations() {
+
+        List<String> locs = new ArrayList<>();
+
+        String sql = "select AisleNumber, AisleBay, SubBay from AisleBaySubBay where occupied = false";
+
+        String addToList = "";
+
+        try {
+            PreparedStatement ps = c.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                String aisleNum = String.valueOf(rs.getInt("AisleNumber"));
+
+                String bayNum = String.valueOf(rs.getInt("AisleBay"));
+
+                String SubBay = String.valueOf(rs.getInt("SubBay"));
+
+                addToList = aisleNum + "-" + bayNum + "-" + SubBay;
+
+                locs.add(addToList);
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error in loadFreeLocations");
+            e.printStackTrace();
+        }
+        return locs;
+    }
+
+    public Map<String, String> getAllDepts() {
+
+        Map<String, String> allDepts = new HashMap<>();
+
+        String sql = "select deptID, departmentName from departments";
+
+        try {
+            PreparedStatement ps = c.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                
+                String deptID = String.valueOf(rs.getInt("deptID"));
+                String deptName = rs.getString("departmentName");
+                
+                allDepts.put(deptID, deptName);
+                
+                
+            }
+            
+            
+        } catch (SQLException e) {
+            System.out.println("error in getAllDepts");
+            e.printStackTrace();
+
+        }
+        
+        return allDepts;
+
+    }
+
 }

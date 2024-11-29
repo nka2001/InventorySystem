@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -88,7 +89,16 @@ public class SecondaryController {
     private TableColumn<Orders, String> assignedCol;
     @FXML
     private TableColumn<Orders, String> orderDateCol;
+    @FXML
+    private TableView<Map.Entry<String, String>> departmentsTable;
+    @FXML
+    private TableColumn<Map.Entry<String, String>, String> deparetmentIDcol;
+    @FXML
+    private TableColumn<Map.Entry<String, String>, String> departmentNamecol;
 
+    private Map<String, String> allDepts = new HashMap<>();
+    
+    
     public void initialize() {
 
         palletIDCol.setCellValueFactory(new PropertyValueFactory<>("PalletID"));
@@ -98,6 +108,14 @@ public class SecondaryController {
         orderCol.setCellValueFactory(new PropertyValueFactory<>("OrderID"));
         assignedCol.setCellValueFactory(new PropertyValueFactory<>("Username"));
         orderDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDate"));
+        
+        deparetmentIDcol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey()));
+        departmentNamecol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue()));
+        
+        allDepts = dbm.getAllDepts();
+        ObservableList<Map.Entry<String, String>> allDeptartments = FXCollections.observableArrayList(allDepts.entrySet());
+        departmentsTable.setItems(allDeptartments);
+        
 
         welcomeLabel.setText("Welcome, " + sm.getUser());
         loadPalletPie();

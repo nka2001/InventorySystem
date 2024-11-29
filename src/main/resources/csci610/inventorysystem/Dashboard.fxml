@@ -135,26 +135,12 @@
                         <Font size="36.0" />
                      </font>
                   </Text>
-                  <Label text="28: Garden">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label text="21: Lumber">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label text="16: Hardware">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label text="13: Electrical">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
+                  <TableView fx:id="departmentsTable" prefHeight="227.0" prefWidth="268.0">
+                    <columns>
+                      <TableColumn fx:id="deparetmentIDcol" prefWidth="135.33331298828125" text="Department ID" />
+                      <TableColumn fx:id="departmentNamecol" prefWidth="132.00003051757812" text="Department Name" />
+                    </columns>
+                  </TableView>
                </children>
             </VBox>
             <Label layoutX="71.0" layoutY="245.0" text="Legend:">

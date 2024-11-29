@@ -87,6 +87,16 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <TableView fx:id="openLocationsTable" layoutX="186.0" layoutY="545.0" onMouseClicked="#getLocation" prefHeight="355.0" prefWidth="349.0">
+                    <columns>
+                      <TableColumn fx:id="locationsCol" prefWidth="348.00002034505206" text="Open Locations" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="275.0" layoutY="498.0" text="Open Locations:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package csci610.inventorysystem;
 
 import java.io.IOException;
@@ -89,13 +86,18 @@ public class OldTruckViewController {
     @FXML
     private void loadTruckSKUs(ActionEvent event) {
         
+        if(truckChoiceBox.getItems().size() <= 1){
+        
         allSKUsOnTruck = dbm.getSKUsonTruck(Integer.parseInt(truckChoiceBox.getValue()));
 
         deliveryDateLabel.setText(allunpackedTrucks.get(truckChoiceBox.getValue()));
 
+        
+        
         ObservableList<Map.Entry<String, String>> truckList = FXCollections.observableArrayList(allSKUsOnTruck.entrySet());
 
         SKUTable.setItems(truckList);
+        }
         
     }
     
