@@ -16,11 +16,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
 /**
- *
+ * create user controller controls the create user GUI, used to insert a new user into the database
  * @author nicka
  */
 public class CreateUserController {
 
+    //FXML controllers
     @FXML
     private Button BackButton;
     @FXML
@@ -50,8 +51,10 @@ public class CreateUserController {
     @FXML
     private CheckBox AccountDisabledInput;
 
-    private DatabaseManager dbm = new DatabaseManager();
+    private DatabaseManager dbm = new DatabaseManager();//database access instance
 
+    
+    //user input fields
     private String password = "";
     private String fName = "";
     private String lName = "";
@@ -61,23 +64,32 @@ public class CreateUserController {
     private String payRate = "";
     private String position = "";
 
+    /**
+     * goback method will allow a user to return to the previous page
+     * @param event
+     * @throws IOException 
+     */
     @FXML
-    private void GoBack(ActionEvent event) throws IOException {
+    private void goBack(ActionEvent event) throws IOException {
 
+        //create an alert that will prompt the user to choose between returning to the previous page or just canceling the action
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setTitle("Cancel Action");
         a.setHeaderText("Are you sure you want to cancel?");
 
+        //add two buttons, yes will cause the user to go back, no will simply close the alert
         ButtonType byes = new ButtonType("Yes");
         ButtonType bno = new ButtonType("No");
         a.getButtonTypes().setAll(byes, bno);
 
         Optional<ButtonType> result = a.showAndWait();
 
+        //if yes, return to previous page
         if (result.isPresent() && result.get() == byes) {
 
             App.setRoot("Dashboard");
 
+        //if no, just close the alert
         } else if (result.get() == bno) {
 
             a.close();
@@ -85,16 +97,21 @@ public class CreateUserController {
         }
 
     }
-
+    
+    /**
+     * createNewUser will insert a new user into the database
+     * @param event 
+     */
     @FXML
     private void createNewUser(ActionEvent event) {
 
-        String username = usernameInput.getText();
+        String username = usernameInput.getText();//get the username from the page
 
-        if (!username.equalsIgnoreCase("")) {
+        if (!username.equalsIgnoreCase("")) {//first check if the username field is blank, if so, throw an error
 
-            if (!dbm.findUser(username)) {
+            if (!dbm.findUser(username)) {//then, check if the user exists, throw an error if true
 
+                //gather input from the page, cast if needed
                 password = passwordInput.getText();
                 fName = firstNameInput.getText();
                 lName = lastNameInput.getText();
@@ -121,6 +138,7 @@ public class CreateUserController {
                     isDisabled = true;
                 }
 
+                //validate the input, check for any empty text fields/missing info, throw an error if this is the case
                 if (validateInput()) {
 
                     Alert a = new Alert(Alert.AlertType.ERROR);
@@ -132,11 +150,13 @@ public class CreateUserController {
                     //if a text field is not empty, then add it to DB
                 } else {
 
+                    
                     float pay = Float.parseFloat(payRate);
 
                     try {
+                        //attempt to add the user into the database, try-catch used for date data type conversion
                         if (dbm.addUser(username, password, displayName, fName, lName, DateOfBirth, gender, pay, isAdmin, position, isDisabled)) {
-
+                            //throw an alert if successful
                             Alert a = new Alert(Alert.AlertType.INFORMATION);
                             a.setTitle("User Added");
                             a.setContentText("User Added Successfully!");
@@ -144,12 +164,13 @@ public class CreateUserController {
 
                         }
                     } catch (ParseException ex) {
-
+                        System.out.println("parse error in createUser");
+                        ex.printStackTrace();
                     }
 
                 }
 
-            } else {
+            } else {//if the user exists already
 
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setTitle("Error");
@@ -157,7 +178,8 @@ public class CreateUserController {
                 a.setContentText("Error, the user already exists in the database");
                 a.showAndWait();
             }
-        } else {
+            
+        } else {//if a text field is empty, throw an error
             Alert a = new Alert(Alert.AlertType.ERROR);
             a.setTitle("Error Creating User");
             a.setHeaderText("Error");

@@ -1,54 +1,104 @@
-
 package csci610.inventorysystem;
 
 /**
+ * product class used by the products table, used for tableview when there is
+ * more than two columns
  *
  * @author nicka
  */
 public class Product {
-    
+
+    //fields to be set by database manager
     private String SKU;
     private String ProductTitle;
     private int Department;
     private int Stock;
-    
-    public Product(String sku, String prodTitle, int dept, int stock){
+
+    /**
+     * overloaded constructor used to assign all values
+     *
+     * @param sku
+     * @param prodTitle
+     * @param dept
+     * @param stock
+     */
+    public Product(String sku, String prodTitle, int dept, int stock) {
         this.SKU = sku;
         this.ProductTitle = prodTitle;
         this.Department = dept;
         this.Stock = stock;
     }
-    
-    public void setSKU(String sku){
+
+    /**
+     * sets SKU
+     *
+     * @param sku
+     */
+    public void setSKU(String sku) {
         this.SKU = sku;
     }
-    
-    public void setProdTitle(String prodTitle){
+
+    /**
+     * sets product title
+     *
+     * @param prodTitle
+     */
+    public void setProdTitle(String prodTitle) {
         this.ProductTitle = prodTitle;
     }
-    
-    public void setDepartment(int dept){
+
+    /**
+     * sets department
+     *
+     * @param dept
+     */
+    public void setDepartment(int dept) {
         this.Department = dept;
     }
-    
-    public void setStock(int stock){
+
+    /**
+     * sets stock
+     *
+     * @param stock
+     */
+    public void setStock(int stock) {
         this.Stock = stock;
     }
-    
-    public String getSKU(){
+
+    /**
+     * gets SKU
+     *
+     * @return
+     */
+    public String getSKU() {
         return SKU;
     }
-    
-    public String getProductTitle(){
+
+    /**
+     * gets product title
+     *
+     * @return
+     */
+    public String getProductTitle() {
         return ProductTitle;
     }
-    
-    public int getDepartment(){
+
+    /**
+     * gets department
+     *
+     * @return
+     */
+    public int getDepartment() {
         return Department;
     }
-    
-    public int getStock(){
+
+    /**
+     * gets current stock
+     *
+     * @return
+     */
+    public int getStock() {
         return Stock;
     }
-    
+
 }

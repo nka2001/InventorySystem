@@ -7,17 +7,25 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
+ * encryption manager used to encrypt and decrypt passwords, passwords are first
+ * encrypted then checked against the database
+ * 
+ * class was provided by CSCI 610 class
  *
  * @author nicka
  */
 public class EncryptionManager {
 
-    public static String encryptkey = "NetworkingOnTop";
+    public static String encryptkey = "NetworkingOnTop";//secret key, used for the hash
 
     private static SecretKeySpec secret;
 
-    private static byte[] key;
+    private static byte[] key;//setting up encryption key
 
+    /**
+     * setkey will create the hash function based on the specified encryption
+     * method, in this case, SHA-1, and AES are used to encrypt data.
+     */
     public static void setKey() {
 
         MessageDigest sha = null;
@@ -34,6 +42,11 @@ public class EncryptionManager {
 
     }
 
+    /**
+     * encrypt will encrypt a given parameter using AES encrpyption and return that encrypted value
+     * @param encryptMe
+     * @return 
+     */
     public static String encrypt(String encryptMe) {
 
         try {
@@ -41,7 +54,7 @@ public class EncryptionManager {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secret);
 
-            return Base64.getEncoder().encodeToString(cipher.doFinal(encryptMe.getBytes("UTF-8")));
+            return Base64.getEncoder().encodeToString(cipher.doFinal(encryptMe.getBytes("UTF-8")));//encrypt the input
         } catch (Exception e) {
             System.out.println("error in encrypt method");
             e.printStackTrace();
@@ -50,6 +63,11 @@ public class EncryptionManager {
         return null;
     }
 
+    /**
+     * decrypt will decrypt a given parameter and return it
+     * @param decryptMe
+     * @return 
+     */
     public static String decrypt(String decryptMe) {
 
         try {

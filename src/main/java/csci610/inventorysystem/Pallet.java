@@ -1,42 +1,83 @@
 package csci610.inventorysystem;
 
 /**
+ * Pallet class, used by pallet / database manager to set up table view with
+ * more than 2 columns
  *
  * @author nicka
  */
 public class Pallet {
 
+    //fields to be set by database manager
     private int palletID;
     private int quantity;
     private String location;
 
+    /**
+     * overloaded constructor will assign provided values without needing
+     * get/set
+     *
+     * @param p
+     * @param q
+     * @param l
+     */
     public Pallet(int p, int q, String l) {
         this.palletID = p;
         this.quantity = q;
         this.location = l;
     }
-    
-    public void setQuantity(int q){
+
+    /**
+     * sets quantity
+     *
+     * @param q
+     */
+    public void setQuantity(int q) {
         this.quantity = q;
     }
-    
-    public void setPalletID(int p){
+
+    /**
+     * sets pallet ID
+     *
+     * @param p
+     */
+    public void setPalletID(int p) {
         this.palletID = p;
     }
-    
-    public void setLocation(String l){
+
+    /**
+     * sets location
+     *
+     * @param l
+     */
+    public void setLocation(String l) {
         this.location = l;
     }
-    
-    public String getLocation(){
+
+    /**
+     * gets location
+     *
+     * @return
+     */
+    public String getLocation() {
         return location;
     }
-    
-    public int getPalletID(){
+
+    /**
+     * gets pallet ID
+     *
+     * @return
+     */
+    public int getPalletID() {
         return palletID;
     }
 
-    public int getQuantity(){
+    /**
+     * gets quantity
+     *
+     * @return
+     */
+    public int getQuantity() {
         return quantity;
     }
 }
