@@ -87,8 +87,6 @@ public class SecondaryController {
     @FXML
     private TextField SearchSKU;
     @FXML
-    private Button viewTrucks;
-    @FXML
     private Button addOrder;
     @FXML
     private Button createTruck;
@@ -106,6 +104,8 @@ public class SecondaryController {
     private TableColumn<Map.Entry<String, String>, String> departmentNamecol;
 
     private Map<String, String> allDepts = new HashMap<>();
+    @FXML
+    private Button modifyUser;
 
     /**
      * initialize will run opening the dashboard, all piecharts, tableviews, and
@@ -150,6 +150,7 @@ public class SecondaryController {
             removeLocationButton.setDisable(false);
             addOrder.setDisable(false);
             createTruck.setDisable(false);
+            modifyUser.setDisable(false);
         }
 
     }
@@ -437,13 +438,6 @@ public class SecondaryController {
 
     }
 
-    /**
-     * legacy
-     * @param event 
-     */
-    @FXML
-    private void viewTrucks(ActionEvent event) {
-    }
 
     /**
      * move to order manager page (all users)
@@ -467,6 +461,13 @@ public class SecondaryController {
 
         App.setRoot("TruckManager");
 
+    }
+
+    @FXML
+    private void modifyUser(ActionEvent event) throws IOException {
+        
+        App.setRoot("ModifyUser");
+        
     }
 
 }

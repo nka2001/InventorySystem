@@ -23,16 +23,16 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
           <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" text="Logout" />
-            <Button fx:id="viewTrucks" mnemonicParsing="false" onAction="#viewTrucks" text="View Incoming Trucks" />
+            <Button fx:id="addOrder" mnemonicParsing="false" onAction="#addOrder" text="Order Manager" />
+            <Button fx:id="createTruck" mnemonicParsing="false" onAction="#createTruck" text="Truck Manager" />
             <Button fx:id="createUser" disable="true" mnemonicParsing="false" onAction="#createNewUser" text="Create User" />
+            <Button fx:id="modifyUser" disable="true" mnemonicParsing="false" onAction="#modifyUser" text="Modify User" />
             <Button fx:id="removeUser" disable="true" mnemonicParsing="false" onAction="#removeUserFromSystem" text="Remove User" />
             <Button fx:id="resetPassword" disable="true" mnemonicParsing="false" onAction="#resetUserPassword" text="Reset Password / Update Permission" />
             <Button fx:id="addSKUButton" disable="true" mnemonicParsing="false" onAction="#addSKU" text="Add SKU" />
             <Button fx:id="removeSKUButton" disable="true" mnemonicParsing="false" onAction="#removeSKU" text="Remove SKU" />
             <Button fx:id="addLocationButton" disable="true" mnemonicParsing="false" onAction="#addLocation" text="Add Location" />
             <Button fx:id="removeLocationButton" disable="true" mnemonicParsing="false" onAction="#removeLocation" text="Remove Location" />
-            <Button fx:id="addOrder" disable="true" mnemonicParsing="false" onAction="#addOrder" text="Order Manager" />
-            <Button fx:id="createTruck" disable="true" mnemonicParsing="false" onAction="#createTruck" text="Truck Manager" />
         </items>
       </ToolBar>
    </top>

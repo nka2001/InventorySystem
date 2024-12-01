@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="841.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csci610.inventorysystem.ModifyUserController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button fx:id="BackButton" mnemonicParsing="false" onAction="#goBack" text="Back" />
+        </items>
+      </ToolBar>
+   </top>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" text="Update User" textAlignment="CENTER">
+               <font>
+                  <Font size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="60.0" top="50.0" />
+               </VBox.margin>
+            </Label>
+            <AnchorPane prefHeight="585.0" prefWidth="755.0">
+               <children>
+                  <Button fx:id="submitButton" layoutX="337.0" layoutY="545.0" mnemonicParsing="false" onAction="#modifyUser" text="Update User" />
+                  <HBox layoutX="111.0" layoutY="293.0" prefHeight="222.0" prefWidth="534.0">
+                     <children>
+                        <VBox prefHeight="353.0" prefWidth="261.0">
+                           <children>
+                              <Label text="First Name:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Last Name:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Date of Birth:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Gender:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Pay Rate:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Position:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="353.0" prefWidth="273.0">
+                           <children>
+                              <TextField fx:id="firstNameInput">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="lastNameInput">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="DOBInput">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <HBox prefHeight="21.0" prefWidth="273.0">
+                                 <children>
+                                    <RadioButton fx:id="MaleButton" mnemonicParsing="false" text="Male">
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="MFGroup" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="femaleButton" mnemonicParsing="false" text="Female" toggleGroup="$MFGroup" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <TextField fx:id="payRateInput">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField fx:id="positionInput">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" />
+                                 </VBox.margin>
+                              </TextField>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <TableView fx:id="userGrid" layoutX="206.0" layoutY="14.0" onMouseClicked="#loadUserData" prefHeight="239.0" prefWidth="343.0">
+                    <columns>
+                      <TableColumn fx:id="usernameCol" prefWidth="171.3333740234375" text="Username" />
+                      <TableColumn fx:id="displayNameCol" prefWidth="170.6666259765625" text="Display Name" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+</BorderPane>

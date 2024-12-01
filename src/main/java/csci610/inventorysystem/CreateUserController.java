@@ -70,7 +70,7 @@ public class CreateUserController {
      * @throws IOException 
      */
     @FXML
-    private void goBack(ActionEvent event) throws IOException {
+    private void GoBack(ActionEvent event) throws IOException {
 
         //create an alert that will prompt the user to choose between returning to the previous page or just canceling the action
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);

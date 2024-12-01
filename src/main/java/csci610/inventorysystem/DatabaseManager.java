@@ -1758,7 +1758,7 @@ public class DatabaseManager {
 
     /**
      * processTruck will process a truck and set it unpacked to true
-     * 
+     *
      * @param truckID
      * @return
      */
@@ -1787,8 +1787,8 @@ public class DatabaseManager {
 
     /**
      * getAllUnpackedTrucks will get all of the unpacked trucks in the database
-     * 
-     * @return 
+     *
+     * @return
      */
     public Map<String, String> getAllunPackedTrucks() {
 
@@ -1832,11 +1832,11 @@ public class DatabaseManager {
 
     /**
      * insertNewTruck will insert a new truck into the database
-     * 
+     *
      * @param TruckID
      * @param DeliveryDate
      * @return
-     * @throws ParseException 
+     * @throws ParseException
      */
     public boolean insertNewTruck(int TruckID, String DeliveryDate) throws ParseException {
 
@@ -1871,10 +1871,10 @@ public class DatabaseManager {
 
     /**
      * insertIntoSKUsOnTrucks will insert all SKUs on a given truckID
-     * 
+     *
      * @param SKUsToAddToTruck
      * @param truckID
-     * @return 
+     * @return
      */
     public boolean insertIntoSKUsOnTrucks(Map<String, String> SKUsToAddToTruck, int truckID) {
 
@@ -1908,9 +1908,9 @@ public class DatabaseManager {
 
     /**
      * getTruckExists will return if a truck exists or not
-     * 
+     *
      * @param TruckID
-     * @return 
+     * @return
      */
     public boolean getTruckExists(int TruckID) {
 
@@ -1939,9 +1939,9 @@ public class DatabaseManager {
 
     /**
      * requiresChange will determine if a user requires a password change or not
-     * 
+     *
      * @param username
-     * @return 
+     * @return
      */
     public boolean reuqiresChange(String username) {
 
@@ -1971,9 +1971,10 @@ public class DatabaseManager {
     }
 
     /**
-     * removePWChange will determine if a user has changed their password, and set requires password change to false
-     * 
-     * @param username 
+     * removePWChange will determine if a user has changed their password, and
+     * set requires password change to false
+     *
+     * @param username
      */
     public void removePWChange(String username) {
 
@@ -1996,9 +1997,10 @@ public class DatabaseManager {
     }
 
     /**
-     * loadFreeLocations will load all locations in the database that are NOT occupied
-     * 
-     * @return 
+     * loadFreeLocations will load all locations in the database that are NOT
+     * occupied
+     *
+     * @return
      */
     public List<String> loadFreeLocations() {
 
@@ -2041,8 +2043,8 @@ public class DatabaseManager {
 
     /**
      * get all departments in the database
-     * 
-     * @return 
+     *
+     * @return
      */
     public Map<String, String> getAllDepts() {
 
@@ -2079,9 +2081,9 @@ public class DatabaseManager {
 
     /**
      * getDisplayName will get the display name for a given username
-     * 
+     *
      * @param username
-     * @return 
+     * @return
      */
     public String getDisplayName(String username) {
 
@@ -2108,6 +2110,116 @@ public class DatabaseManager {
         }
 
         return displayName;//return to the display name
+    }
+
+    /**
+     * loadUserData will retrieve all user data and put in a list to be returned
+     * @param username
+     * @return 
+     */
+    public List<User> loadUserData(String username) {
+
+        //list containing all of user data
+        List<User> userData = new ArrayList<>();
+
+        //query
+        String sql = "select First_Name, Last_Name, DateOfBirth, Gender, PayRate, Position from users where username = ?";
+
+        try {
+            //create a statement for execution
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setString(1, username);
+
+            //execute the query
+            ResultSet rs = ps.executeQuery();
+
+            //get the results
+            while (rs.next()) {
+                //I use check for null here since some values pre-input validation can be null, this will catch these null values for proper processing
+                String FName = rs.getString("First_Name");
+                String LName = rs.getString("Last_Name");
+                Date DOB = rs.getDate("DateOfBirth");
+                String DOBAsString;
+                if (DOB == null) {
+                    DOBAsString = "Not Set";
+                } else {
+                    DOBAsString = DOB.toString();
+                }
+
+                String Gender = rs.getString("Gender");
+                if (Gender == null) {
+                    Gender = "Not Set";
+                }
+                float payRate = rs.getFloat("PayRate");
+
+                String position = rs.getString("Position");
+                if (position == null) {
+                    position = "Not Set";
+                }
+                
+                //add the retrieved values to the list
+                userData.add(new User(FName, LName, DOBAsString, payRate, position, Gender));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error in loadUserData");
+            e.printStackTrace();
+        }
+
+        return userData;//return the list
+    }
+
+    /**
+     * updateUserInfo will update of the passed in user information
+     * 
+     * @param fName
+     * @param lName
+     * @param DOB
+     * @param Gender
+     * @param payRate
+     * @param position
+     * @param username
+     * @return
+     * @throws ParseException 
+     */
+    public boolean updateUserInfo(String fName, String lName, String DOB, String Gender, float payRate, String position, String username) throws ParseException {
+
+        int rows = 0;
+
+        //set Display name
+        String displayName = fName + " " + lName;
+
+        //query
+        String sql = "update users set Display_Name = ?, First_Name = ?, Last_Name = ?, DateOfBirth = ?, Gender = ?, PayRate = ?, Position = ? where username = ?";
+
+        //convert string date to SQL date
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+
+        java.util.Date utilDate = f.parse(DOB);
+
+        Date SQLDOB = new Date(utilDate.getTime());
+
+        try {
+            //create and set statement to be executed
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setString(1, displayName);
+            ps.setString(2, fName);
+            ps.setString(3, lName);
+            ps.setDate(4, SQLDOB);
+            ps.setString(5, Gender);
+            ps.setFloat(6, payRate);
+            ps.setString(7, position);
+            ps.setString(8, username);
+
+            //execute query
+            rows += ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("error in update user info");
+            e.printStackTrace();
+        }
+
+        return rows > 0;//return true if the user info was updated
     }
 
 }
