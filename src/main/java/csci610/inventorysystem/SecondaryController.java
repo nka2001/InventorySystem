@@ -133,7 +133,7 @@ public class SecondaryController {
         ObservableList<Map.Entry<String, String>> allDeptartments = FXCollections.observableArrayList(allDepts.entrySet());
         departmentsTable.setItems(allDeptartments);
 
-        welcomeLabel.setText("Welcome, " + sm.getUser());
+        welcomeLabel.setText("Welcome, " + dbm.getDisplayName(sm.getUser()));//get the display name for the user logging in
         loadPalletPie();//load pie chart
         loadDeptBar();//load bar chart
         loadOrdersTable();//load orders table

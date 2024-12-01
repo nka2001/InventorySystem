@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="1240.0" prefWidth="1924.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csci610.inventorysystem.SecondaryController">
+<BorderPane prefHeight="1241.0" prefWidth="1951.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csci610.inventorysystem.SecondaryController">
    <top>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -126,9 +126,9 @@
       </AnchorPane>
    </right>
    <left>
-      <AnchorPane prefHeight="1200.0" prefWidth="268.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="1201.0" prefWidth="297.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox layoutY="298.0" prefHeight="856.0" prefWidth="268.0">
+            <VBox layoutX="15.0" layoutY="297.0" prefHeight="856.0" prefWidth="268.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Departments:">
                      <font>
@@ -143,7 +143,7 @@
                   </TableView>
                </children>
             </VBox>
-            <Label layoutX="71.0" layoutY="245.0" text="Legend:">
+            <Label layoutX="86.0" layoutY="244.0" text="Legend:">
                <font>
                   <Font size="36.0" />
                </font>

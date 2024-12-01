@@ -10,23 +10,23 @@
 
 <AnchorPane prefHeight="603.0" prefWidth="592.0" style="-fx-background-color: f0f2f5;" stylesheets="@../../../../../css/login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="csci610.inventorysystem.PrimaryController">
    <children>
-      <VBox layoutX="219.0" layoutY="252.0">
+      <VBox alignment="TOP_CENTER" layoutX="221.0" layoutY="311.0">
          <children>
             <TextField fx:id="usernameInput" promptText="Username" />
          </children>
       </VBox>
-      <PasswordField fx:id="passwordInput" layoutX="219.0" layoutY="295.0" promptText="Password" />
-      <Button fx:id="loginButton" layoutX="259.0" layoutY="341.0" mnemonicParsing="false" onAction="#OpenDashboard" text="Login">
+      <PasswordField fx:id="passwordInput" layoutX="221.0" layoutY="354.0" promptText="Password" />
+      <Button fx:id="loginButton" layoutX="261.0" layoutY="400.0" mnemonicParsing="false" onAction="#OpenDashboard" text="Login">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Text layoutX="89.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pallet Management">
+      <Text layoutX="49.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inventory Management">
          <font>
             <Font size="48.0" />
          </font>
       </Text>
-      <Text layoutX="272.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+      <Text layoutX="274.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
          <font>
             <Font size="18.0" />
          </font>
