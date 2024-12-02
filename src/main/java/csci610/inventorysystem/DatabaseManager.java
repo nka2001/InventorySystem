@@ -708,17 +708,30 @@ public class DatabaseManager {
      */
     public boolean removeUser(String username) {
 
+        String sql2 = "update orderspickedbyusers set user_ID = 6";//instead of deleting, just assign order to admin so no orders are lost
+
+        String sql3 = "update usersunpackingtruck set user_ID = 6";//instead of deleting just assing the truck to admin so no trucks are lost
+
         String sql = "delete from users where username = ?";
+
+        int rows2 = 0;
+        int rows3 = 0;
 
         try {
             //create query to be executed
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, username);
 
+            PreparedStatement ps2 = c.prepareStatement(sql2);
+            PreparedStatement ps3 = c.prepareStatement(sql3);
+
+            rows2 += ps2.executeUpdate();
+            rows3 += ps3.executeUpdate();
+
             //execute the query
             int rows = ps.executeUpdate();
 
-            return rows > 0;//return true if there is at least 1 row removed
+            return rows > 0 && rows2 > 0 && rows3 > 0;//return true if there is at least 1 row removed
 
         } catch (SQLException e) {
             System.out.println("error in remove user");
@@ -738,16 +751,36 @@ public class DatabaseManager {
 
         //query
         String sql = "delete from Product where SKU = ?";
+        String sql1 = "delete from skusonpallets where sku = ?";
+        String sql2 = "delete from productsonorders where sku = ?";
+        String sql3 = "delete from quantityofSKUontruck where sku = ?";
+
+        int rows = 0;
+        int rows2 = 0;
+        int rows3 = 0;
+        int rows4 = 0;
 
         try {
             //create a statement to be executed
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, SKU);
 
-            //execute the query
-            int rows = ps.executeUpdate();
+            PreparedStatement ps2 = c.prepareStatement(sql1);
+            ps2.setString(1, SKU);
 
-            return rows > 0;//return true if at least 1 row is removed
+            PreparedStatement ps4 = c.prepareStatement(sql3);
+            ps4.setString(1, SKU);
+
+            PreparedStatement ps3 = c.prepareStatement(sql2);
+            ps3.setString(1, SKU);
+
+            //execute the query
+            rows2 += ps2.executeUpdate();
+            rows3 += ps3.executeUpdate();
+            rows4 += ps4.executeUpdate();
+            rows += ps.executeUpdate();
+
+            return rows > 0 && (rows2 > 0 || rows3 > 0 || rows4 > 0);//return true if at least 1 row is removed
 
         } catch (SQLException e) {
             System.out.println("error in removeSKU");
@@ -1543,13 +1576,19 @@ public class DatabaseManager {
         //queries 
         String sqldelete1 = "delete from ProductsOnOrders where Order_ID = ?";//delete from skus on orders first otherwise deletion anomoly
         String sqldelete2 = "delete from Orders where Order_ID = ?";//then delete from orders
+        String sqldelete3 = "delete from orderspickedbyusers where Order_ID = ?";
 
         int rows = 0;
+        int rows2 = 0;
+        int rows3 = 0;
 
         try {
             //create and set statement 1 (delete all skus associated with an order)
             PreparedStatement ps = c.prepareStatement(sqldelete1);
             ps.setString(1, orderID);
+
+            PreparedStatement ps3 = c.prepareStatement(sqldelete3);
+            ps3.setString(1, orderID);
 
             //create and set statement 2 (delete the actual order)
             PreparedStatement ps2 = c.prepareStatement(sqldelete2);
@@ -1557,14 +1596,15 @@ public class DatabaseManager {
 
             //execute both queries
             rows += ps.executeUpdate();
-            rows += ps2.executeUpdate();
+            rows3 += ps3.executeUpdate();
+            rows2 += ps2.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println("error in remove order");
             e.printStackTrace();
         }
 
-        return rows > 0;//return true if rows were removed
+        return rows2 > 0 && (rows > 0 || rows3 > 0);//return true if rows were removed
     }
 
     /**
@@ -1614,15 +1654,31 @@ public class DatabaseManager {
         String sql = "insert into OrdersPickedByUsers values (?,?,?,?)";
 
         try {
-            //create and set a statement to be executed
-            PreparedStatement ps = c.prepareStatement(sql);
-            ps.setString(1, OrderID);
-            ps.setInt(2, getUserID(userID));
-            ps.setDate(3, null);
-            ps.setBoolean(4, false);
 
-            rows += ps.executeUpdate();//execute the query
+            //if the order is already assigned, re assign it instead of inserting a new row
+            if (orderIsAssigned(OrderID)) {
+                String sql2 = "update ordersPickedByUsers set user_ID = ? where Order_ID = ?";
+                int rows2 = 0;
 
+                PreparedStatement ps2 = c.prepareStatement(sql2);
+                ps2.setInt(1, getUserID(userID));
+                ps2.setString(2, OrderID);
+
+                rows2 = ps2.executeUpdate();
+
+                return rows2 > 0;
+
+            } else {
+
+//create and set a statement to be executed
+                PreparedStatement ps = c.prepareStatement(sql);
+                ps.setString(1, OrderID);
+                ps.setInt(2, getUserID(userID));
+                ps.setDate(3, null);
+                ps.setBoolean(4, false);
+
+                rows += ps.executeUpdate();//execute the query
+            }
         } catch (SQLException e) {
             System.out.println("error in insert into orders picked by users");
             e.printStackTrace();
@@ -1642,7 +1698,7 @@ public class DatabaseManager {
         List<Orders> orders = new ArrayList<>();
 
         //query
-        String sql = "select O.Order_ID, U.username, O.OrderDate from Orders as O inner join OrdersPickedByUsers as OP on OP.Order_ID = O.Order_ID inner join Users as U on OP.User_ID = U.User_ID";
+        String sql = "select O.Order_ID, U.username, O.OrderDate from Orders as O inner join OrdersPickedByUsers as OP on OP.Order_ID = O.Order_ID inner join Users as U on OP.User_ID = U.User_ID where packed = false";
 
         try {
             //prepare a statement to be executed
@@ -1762,29 +1818,58 @@ public class DatabaseManager {
      * @param truckID
      * @return
      */
-    public boolean processTruck(int truckID) {
+    public boolean processTruck(int truckID, String username, Map<String, String> allSKUsOnTruck) {
 
         int rows = 0;
+        int rows2 = 0;
+        int rows3 = 0;
 
         //query
         String sql = "update Truck set Unpacked = true where TruckID = ?";
+        String sql2 = "insert into UsersUnpackingTruck values (?,?,CURRENT_DATE)";//used for assign a truck to a user
+        String sql3 = "update product set Stock = Stock + ? where SKU = ?";
 
         try {
             //prepare a statement to be executed
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setInt(1, truckID);
 
+            PreparedStatement ps2 = c.prepareStatement(sql2);
+            ps2.setInt(1, getUserID(username));
+            ps2.setInt(2, truckID);
+
+            PreparedStatement ps3 = c.prepareCall(sql3);
+
+            for (Map.Entry<String, String> entry : allSKUsOnTruck.entrySet()) {
+                ps3.setInt(1, Integer.parseInt(entry.getValue()));
+                ps3.setString(2, entry.getKey());
+
+                rows3 += ps3.executeUpdate();
+            }
+
             //execute the query
             rows += ps.executeUpdate();
+            rows2 += ps2.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println("error in processtruck");
             e.printStackTrace();
         }
 
-        return rows > 0;//return true if at least 1 row is updated
+        return rows > 0 && rows2 > 0 && rows3 > 0;//return true if at least 1 row is updated
     }
 
+    /*
+    for (Map.Entry<String, String> entry : SKUsToAddToOrder.entrySet()) {
+
+                ps.setString(1, entry.getKey());
+                ps.setString(2, orderID);
+                ps.setInt(3, Integer.parseInt(entry.getValue()));
+
+                rows += ps.executeUpdate();//execute the query
+
+            }
+     */
     /**
      * getAllUnpackedTrucks will get all of the unpacked trucks in the database
      *
@@ -2114,8 +2199,9 @@ public class DatabaseManager {
 
     /**
      * loadUserData will retrieve all user data and put in a list to be returned
+     *
      * @param username
-     * @return 
+     * @return
      */
     public List<User> loadUserData(String username) {
 
@@ -2156,7 +2242,7 @@ public class DatabaseManager {
                 if (position == null) {
                     position = "Not Set";
                 }
-                
+
                 //add the retrieved values to the list
                 userData.add(new User(FName, LName, DOBAsString, payRate, position, Gender));
             }
@@ -2171,7 +2257,7 @@ public class DatabaseManager {
 
     /**
      * updateUserInfo will update of the passed in user information
-     * 
+     *
      * @param fName
      * @param lName
      * @param DOB
@@ -2180,7 +2266,7 @@ public class DatabaseManager {
      * @param position
      * @param username
      * @return
-     * @throws ParseException 
+     * @throws ParseException
      */
     public boolean updateUserInfo(String fName, String lName, String DOB, String Gender, float payRate, String position, String username) throws ParseException {
 
@@ -2220,6 +2306,113 @@ public class DatabaseManager {
         }
 
         return rows > 0;//return true if the user info was updated
+    }
+
+    /**
+     * getAllSKUsOnOrders will return a map of all skus on the order given
+     * @param orderID
+     * @return 
+     */
+    public Map<String, String> getAllSKUsOnOrders(String orderID) {
+
+        //map containing all SKUs on a given order
+        Map<String, String> AllSKUsOnOrders = new HashMap<>();
+        
+        //query
+        String sql = "select SKU, SKUQuantity from ProductsOnOrders where Order_ID = ?";
+
+        try {
+            //create a statement to be executed
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setString(1, orderID);
+
+            //execute query
+            ResultSet rs = ps.executeQuery();
+
+            //iterate through the results, adding each result into the sku map
+            while (rs.next()) {
+
+                String SKU = rs.getString("SKU");
+                String quan = String.valueOf(rs.getInt("SKUQuantity"));
+
+                AllSKUsOnOrders.put(SKU, quan);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error in getAllSKUsOnOrders");
+            e.printStackTrace();
+        }
+
+        return AllSKUsOnOrders;//return the sku map to the controller
+    }
+
+    /**
+     * complete order will mark a given order as complete
+     * 
+     * @param orderID
+     * @return 
+     */
+    public boolean completeOrder(String orderID) {
+
+        int rows = 0;
+        int rows2 = 0;
+
+        //two queries needed to update both orders table and orders
+        String sql = "update orderspickedbyusers set DateCompleted = CURRENT_DATE, OrderPicked = true where order_ID = ?";
+        String sql2 = "update orders set packed = true, ShippingStatus = ? where order_ID = ?";
+
+        try {
+            //creatw two statements to be executed
+            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps2 = c.prepareStatement(sql2);
+
+            //set order ID
+            ps.setString(1, orderID);
+            ps2.setString(1, "Awaiting Delivery");
+            ps2.setString(2, orderID);
+
+            //execute both queries
+            rows += ps.executeUpdate();
+            rows2 += ps2.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("error in complete order");
+            e.printStackTrace();
+        }
+
+        return rows > 0 && rows2 > 0;//return true if an update/insert inserts/updates
+    }
+
+    /**
+     * orderisAssigned will return true if a given order is assigned already
+     * 
+     * used so no one order is assigned to two people 
+     * 
+     * (caused issues on user deletion).
+     * @param orderID
+     * @return 
+     */
+    public boolean orderIsAssigned(String orderID) {
+
+        //query
+        String sql = "select * from OrdersPickedByUsers where Order_ID = ?";
+
+        try {
+            //prepare a statement to be executed
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setString(1, orderID);
+
+            //execute query
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();//return true if something is in the result set
+
+        } catch (SQLException e) {
+            System.out.println("error in orderIsAssigned");
+            e.printStackTrace();
+        }
+
+        return false;//return false by default
     }
 
 }

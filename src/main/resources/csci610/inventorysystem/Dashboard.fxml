@@ -75,7 +75,7 @@
                               <Font size="36.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="OrdersChart" prefHeight="393.0" prefWidth="488.0">
+                        <TableView fx:id="OrdersChart" onMouseClicked="#openCompleteOrder" prefHeight="393.0" prefWidth="488.0">
                           <columns>
                             <TableColumn fx:id="orderCol" prefWidth="180.6666259765625" text="Order ID" />
                             <TableColumn fx:id="assignedCol" minWidth="0.0" prefWidth="178.0001220703125" text="Assigned To" />

@@ -107,7 +107,7 @@ public class CreateTruckController {
         //if yes, return to previous page
         if (result.isPresent() && result.get() == byes) {
 
-            App.setRoot("Dashboard");
+            App.setRoot("TruckManager");
 
             //if no, just close the alert
         } else if (result.get() == bno) {

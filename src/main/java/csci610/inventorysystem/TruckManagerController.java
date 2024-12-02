@@ -100,6 +100,8 @@ public class TruckManagerController {
 
     }
 
+    private SessionManager sm = SessionManager.getInstance();
+    
     /**
      * process truck will mark a truck as unpacked and move it to old trucks (which can be viewd).
      * @param event 
@@ -110,7 +112,7 @@ public class TruckManagerController {
         int selectedTruckID = Integer.parseInt(truckChoiceBox.getValue());//get the selected truck ID from unprocessed trucks
 
         //attempt to process the truck, if the truck is processed, throw an alert
-        if (dbm.processTruck(selectedTruckID)) {
+        if (dbm.processTruck(selectedTruckID, sm.getUser(), allSKUsOnTruck)) {
 
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Success!");

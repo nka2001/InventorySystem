@@ -11,6 +11,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -26,6 +29,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * secondary controller is the dashboard, the dashboard is the core page of the
@@ -262,7 +267,8 @@ public class SecondaryController {
     private Map<Integer, Integer> SKUMap = new HashMap<>();//SKU map for bar chart
 
     /**
-     * loadDeptBar will take all of the SKU and department ID and load them into a barchart.
+     * loadDeptBar will take all of the SKU and department ID and load them into
+     * a barchart.
      */
     private void loadDeptBar() {
 
@@ -292,8 +298,9 @@ public class SecondaryController {
 
     /**
      * moves to create new user page (admin only)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void createNewUser(ActionEvent event) throws IOException {
@@ -304,8 +311,9 @@ public class SecondaryController {
 
     /**
      * moves to reset user password page (admin only)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void resetUserPassword(ActionEvent event) throws IOException {
@@ -316,8 +324,9 @@ public class SecondaryController {
 
     /**
      * move to remove user from system page (admin only)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void removeUserFromSystem(ActionEvent event) throws IOException {
@@ -327,8 +336,9 @@ public class SecondaryController {
 
     /**
      * moves to add SKU page (admin only)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void addSKU(ActionEvent event) throws IOException {
@@ -336,11 +346,12 @@ public class SecondaryController {
         App.setRoot("AddSKU");
 
     }
-    
+
     /**
      * moves to remove SKU page (admin only)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void removeSKU(ActionEvent event) throws IOException {
@@ -351,8 +362,9 @@ public class SecondaryController {
 
     /**
      * moves to create pallet screen (all users)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void openCreatePallet(ActionEvent event) throws IOException {
@@ -363,8 +375,9 @@ public class SecondaryController {
 
     /**
      * moves to add location page (admin only)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void addLocation(ActionEvent event) throws IOException {
@@ -375,8 +388,9 @@ public class SecondaryController {
 
     /**
      * move to remove location page (admin only)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void removeLocation(ActionEvent event) throws IOException {
@@ -384,11 +398,12 @@ public class SecondaryController {
         App.setRoot("RemoveLocation");
 
     }
-    
+
     /**
      * move to update pallet page (all users)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void openUpdatePallet(ActionEvent event) throws IOException {
@@ -400,8 +415,10 @@ public class SecondaryController {
     private List<Pallet> allPalletsWithSKU = new ArrayList<>();//list contating all pallets that have a specified SKU on it
 
     /**
-     * search for pallet will search for all pallets that contain a specified sku and display them in a tableview
-     * @param event 
+     * search for pallet will search for all pallets that contain a specified
+     * sku and display them in a tableview
+     *
+     * @param event
      */
     @FXML
     private void searchForPallet(ActionEvent event) {
@@ -414,11 +431,11 @@ public class SecondaryController {
             a.setTitle("Error");
             a.setHeaderText("Error, please enter a SKU to search");
             a.showAndWait();
-            
+
         } else {//otherwise continue with the search
 
             if (dbm.findSKU(SKU)) {//attempt to locate the SKU
-                
+
                 //load the allPalletsWithSKU table with the results
                 allPalletsWithSKU = dbm.loadPalletsBySKU(SKU);
 
@@ -438,11 +455,11 @@ public class SecondaryController {
 
     }
 
-
     /**
      * move to order manager page (all users)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void addOrder(ActionEvent event) throws IOException {
@@ -453,8 +470,9 @@ public class SecondaryController {
 
     /**
      * move to truck manager (all users)
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void createTruck(ActionEvent event) throws IOException {
@@ -465,9 +483,50 @@ public class SecondaryController {
 
     @FXML
     private void modifyUser(ActionEvent event) throws IOException {
-        
+
         App.setRoot("ModifyUser");
-        
+
+    }
+
+    @FXML
+    private void openCompleteOrder(MouseEvent event) {
+
+        if (event.getClickCount() == 2) {
+
+            Orders selectedOrder = OrdersChart.getSelectionModel().getSelectedItem();
+
+            String orderID = selectedOrder.getOrderID();
+
+            sm.setOrder(orderID);
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("OrderComplete.fxml"));
+                Parent root = loader.load();
+
+                Stage s = new Stage();
+                s.setTitle("Order Assignment and Completion");
+                s.setScene(new Scene(root));
+
+                s.initModality(Modality.APPLICATION_MODAL);
+
+                OrderCompleteController c = loader.getController();
+                c.setStage(s);
+
+                s.showAndWait();
+
+                allOrders = dbm.loadOrders();
+
+                ObservableList<Orders> allOrders = FXCollections.observableArrayList(this.allOrders);
+
+                OrdersChart.setItems(allOrders);
+
+            } catch (IOException e) {
+                System.out.println("error opening breakout page");
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
 }

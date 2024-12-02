@@ -225,6 +225,12 @@ public class CreatePalletController {
 
                 dbm.setLocationOccupied(aisleInt, aisleBay, aisleSubBay);
 
+                allLocs = dbm.loadFreeLocations();//load the free pallet locations from the database
+
+                ObservableList<String> allFreeLocs = FXCollections.observableArrayList(allLocs);//observable array list for all the free locations
+
+                openLocationsTable.setItems(allFreeLocs);//show the array list in the table view
+
             }
 
         }
@@ -233,11 +239,12 @@ public class CreatePalletController {
 
     /**
      * palletTable will get the clicked on SKU in the pallet tag table
+     *
      * @param event
      */
     @FXML
     private void palletTable(MouseEvent event) {
-        
+
         //only a single click is required to select a SKU
         if (event.getClickCount() == 1) {
 
@@ -255,7 +262,8 @@ public class CreatePalletController {
 
     /**
      * availableSKUsTable will get the clicked on SKU in the all SKUs table
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void availableSKUsTable(MouseEvent event) {
@@ -276,8 +284,10 @@ public class CreatePalletController {
     }
 
     /**
-     * getLocation will get the location clicked on from the all available locations table
-     * @param event 
+     * getLocation will get the location clicked on from the all available
+     * locations table
+     *
+     * @param event
      */
     @FXML
     private void getLocation(MouseEvent event) {

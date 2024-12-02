@@ -18,6 +18,8 @@ public class SessionManager {
     private int palletID;
 
     private String locationSelected;
+    
+    public String clickedOrder;
 
     private SessionManager() {
     }
@@ -87,6 +89,14 @@ public class SessionManager {
      */
     public void setLocationID(String location) {
         this.locationSelected = location;
+    }
+    
+    public void setOrder(String orderID){
+        this.clickedOrder = orderID;
+    }
+    
+    public String getOrder(){
+        return clickedOrder;
     }
 
 }

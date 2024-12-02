@@ -318,6 +318,8 @@ public class OrderManagerController {
     @FXML
     private void removeOrder(ActionEvent event) {
 
+       
+        
         //attempt to remove the order based on the selected order, throw alert if successful
         if (dbm.removeOrder(selectedToRemove)) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
