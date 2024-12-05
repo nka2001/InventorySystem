@@ -439,9 +439,20 @@ public class SecondaryController {
                 //load the allPalletsWithSKU table with the results
                 allPalletsWithSKU = dbm.loadPalletsBySKU(SKU);
 
-                ObservableList<Pallet> palletList = FXCollections.observableArrayList(allPalletsWithSKU);
+                if (allPalletsWithSKU.isEmpty()) {
 
-                searchPalletTable.setItems(palletList);
+                    Alert a = new Alert(Alert.AlertType.ERROR);
+                    a.setTitle("Error");
+                    a.setHeaderText("Error, SKU is not on any pallets");
+                    a.showAndWait();
+
+                } else {
+
+                    ObservableList<Pallet> palletList = FXCollections.observableArrayList(allPalletsWithSKU);
+
+                    searchPalletTable.setItems(palletList);
+
+                }
 
             } else {//if the SKU does not exist, throw an error
 

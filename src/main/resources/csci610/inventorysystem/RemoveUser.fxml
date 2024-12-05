@@ -20,14 +20,14 @@
       </ToolBar>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Reset User Password" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Remove User" textAlignment="CENTER">
                <font>
                   <Font size="48.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="50.0" left="160.0" top="50.0" />
+                  <Insets bottom="50.0" top="50.0" />
                </VBox.margin>
             </Label>
             <AnchorPane prefHeight="725.0" prefWidth="753.0">

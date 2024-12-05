@@ -30,7 +30,7 @@
             </Label>
             <AnchorPane prefHeight="470.0" prefWidth="451.0">
                <children>
-                  <Button layoutX="573.0" layoutY="383.0" mnemonicParsing="false" onAction="#updateLocationinDB" text="Add Location" />
+                  <Button layoutX="565.0" layoutY="382.0" mnemonicParsing="false" onAction="#updateLocationinDB" text="Update Location" />
                   <TextField fx:id="subBayTF" layoutX="542.0" layoutY="329.0" />
                   <TextField fx:id="bayNumTF" layoutX="542.0" layoutY="258.0" />
                   <TextField fx:id="aisleNumTF" layoutX="542.0" layoutY="191.0" />

@@ -708,30 +708,34 @@ public class DatabaseManager {
      */
     public boolean removeUser(String username) {
 
-        String sql2 = "update orderspickedbyusers set user_ID = 6";//instead of deleting, just assign order to admin so no orders are lost
+        String sql2 = "update orderspickedbyusers set user_ID = 6 where user_ID = ?";//instead of deleting, just assign order to admin so no orders are lost
 
-        String sql3 = "update usersunpackingtruck set user_ID = 6";//instead of deleting just assing the truck to admin so no trucks are lost
+        String sql3 = "update usersunpackingtruck set user_ID = 6 where user_ID = ?";//instead of deleting just assing the truck to admin so no trucks are lost
 
         String sql = "delete from users where username = ?";
 
         int rows2 = 0;
         int rows3 = 0;
-
+        
+        int userID = getUserID(username);
+        
         try {
             //create query to be executed
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, username);
 
             PreparedStatement ps2 = c.prepareStatement(sql2);
+            ps2.setInt(1, userID);
             PreparedStatement ps3 = c.prepareStatement(sql3);
-
+            ps3.setInt(1, userID);
+            
             rows2 += ps2.executeUpdate();
             rows3 += ps3.executeUpdate();
 
             //execute the query
             int rows = ps.executeUpdate();
 
-            return rows > 0 && rows2 > 0 && rows3 > 0;//return true if there is at least 1 row removed
+            return rows > 0 || (rows2 > 0 || rows3 > 0);//return true if there is at least 1 row removed
 
         } catch (SQLException e) {
             System.out.println("error in remove user");
@@ -780,7 +784,7 @@ public class DatabaseManager {
             rows4 += ps4.executeUpdate();
             rows += ps.executeUpdate();
 
-            return rows > 0 && (rows2 > 0 || rows3 > 0 || rows4 > 0);//return true if at least 1 row is removed
+            return rows > 0 || (rows2 > 0 || rows3 > 0 || rows4 > 0);//return true if at least 1 row is removed
 
         } catch (SQLException e) {
             System.out.println("error in removeSKU");
